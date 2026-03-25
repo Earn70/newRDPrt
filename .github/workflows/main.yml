@@ -1,3 +1,43 @@
+name: RDP Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest   # IMPORTANT (because your code is PowerShell)
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 👇 PASTE YOUR CODE HERE 👇
+      - name: Verify RDP Accessibility
+        run: |
+          Write-Host "Tailscale IP: 100.75.168.87
+
+          $testResult = Test-NetConnection -ComputerName $env:TAILSCALE_IP -Port 3389
+          if (-not $testResult.TcpTestSucceeded) {
+              Write-Error "TCP connection failed"
+              exit 1
+          }
+
+          Write-Host "TCP connectivity success"
+
+      - name: Maintain Connection
+        run: |
+          Write-Host "=== RDP ACCESS ==="
+          Write-Host "Address: $env:TAILSCALE_IP"
+
+          while ($true) {
+              Write-Host "Running..."
+              Start-Sleep -Seconds 300
+          }
+
+
+
+
+
 on:
   workflow_dispatch:
 
